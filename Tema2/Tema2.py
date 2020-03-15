@@ -1,13 +1,11 @@
-import mysql.connector
+import sqlite3
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 
 class WebServer(BaseHTTPRequestHandler):
-
-    connection = mysql.connector.connect(user='root',password='12345', host='localhost', port=3306, database='tema2_cloud')
-    connection.autocommit = True
-    cursor = connection.cursor()
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
 
 
     def do_GET(self):
@@ -65,9 +63,12 @@ class WebServer(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             if self.path == '/anime':
-                query = "SELECT count(*) FROM information_schema.columns WHERE table_name = 'anime';"
+                query = "SELECT count(*) from pragma_table_info('anime');"
                 self.cursor.execute(query)
                 number_of_columns = self.cursor.fetchone()[0]
+
+                query = "DELETE FROM sqlite_sequence WHERE name = 'anime';"
+                self.cursor.execute(query)
 
                 content_length = int(self.headers['Content-Length'])
                 post_data_list = json.loads(self.rfile.read(content_length))
@@ -78,8 +79,9 @@ class WebServer(BaseHTTPRequestHandler):
                         post_data['episodes'] = 'null'
                     query = "insert into anime values (null, '%s', %s)" % (post_data['name'], str(post_data['episodes']))
                     self.cursor.execute(query)
+                    self.conn.commit()
                             
-                    query = "SELECT LAST_INSERT_ID()"
+                    query = "SELECT LAST_INSERT_ROWID()"
                     self.cursor.execute(query)
                     id = self.cursor.fetchone()[0]
 
@@ -130,11 +132,9 @@ class WebServer(BaseHTTPRequestHandler):
                     else:
                         query = 'delete from anime where id = %s' % id
                         self.cursor.execute(query)
+                        self.conn.commit()
                         self.send_response(204)
                         self.end_headers()
-
-                        query = "alter table anime auto_increment = 1;"
-                        self.cursor.execute(query)
             else:
                 self.send_error(404, 'Invalid path')
 
@@ -147,7 +147,7 @@ class WebServer(BaseHTTPRequestHandler):
     def do_PUT(self):
         try:
             if self.path == '/anime':
-                query = "SELECT count(*) FROM information_schema.columns WHERE table_name = 'anime';"
+                query = "SELECT count(*) from pragma_table_info('anime');"
                 self.cursor.execute(query)
                 number_of_columns = self.cursor.fetchone()[0]
 
@@ -174,6 +174,7 @@ class WebServer(BaseHTTPRequestHandler):
                         post_data = self.none_to_null(post_data)
                         query = "update anime set name='%s', episodes=%s where id =%s" % (post_data['name'], post_data['episodes'], post_data['id'])
                         self.cursor.execute(query)
+                        self.conn.commit()
                 else:
                     self.send_response(204)
                     self.end_headers()
@@ -193,7 +194,7 @@ class WebServer(BaseHTTPRequestHandler):
                     if not response:
                         self.send_error(404, "Id doesn't exist")
                     else:
-                        query = "SELECT count(*) FROM information_schema.columns WHERE table_name = 'anime';"
+                        query = "SELECT count(*) from pragma_table_info('anime');"
                         self.cursor.execute(query)
                         number_of_columns = self.cursor.fetchone()[0]
 
@@ -206,6 +207,7 @@ class WebServer(BaseHTTPRequestHandler):
                             post_data = self.none_to_null(post_data)
                             query = "update anime set name='%s', episodes=%s where id =%s" % (post_data['name'], post_data['episodes'], id)
                             self.cursor.execute(query)
+                            self.conn.commit()
                             self.send_response(204)
                             self.end_headers()
 
@@ -248,6 +250,7 @@ class WebServer(BaseHTTPRequestHandler):
                         if key != 'id':
                             query = "update anime set %s='%s'where id =%d" % (key, str(value) ,int(id))
                             self.cursor.execute(query)
+                            self.conn.commit()
                 else:
                     self.send_response(204)
                     self.end_headers()
@@ -275,6 +278,7 @@ class WebServer(BaseHTTPRequestHandler):
                             if key != 'id':
                                 query = "update anime set %s='%s'where id =%d" % (key, value ,int(id))
                                 self.cursor.execute(query)
+                                self.conn.commit()
                         self.send_response(204)
                         self.end_headers()
                             
