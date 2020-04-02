@@ -41,7 +41,7 @@
   <div id="firebaseui-auth-container"></div>
     
   <div id="login-info">
-    <h2>Login info:</h2>
+    <h3>Login info:</h3>
     {% if user_data %} <dl>
       <dt>Name: {{ user_data['name'] }}</dt>
       <br>
@@ -52,12 +52,14 @@
     {% endif %}
   </div>
 
+  <form action="/">
   <button id="sign-out">Sign Out</button>
+  </form>
 
 
 
   <div id="upload">
-    <h2>Upload a photo:</h2>
+    <h3>Upload a photo:</h3>
     <form action="upload_photo" method="POST" enctype="multipart/form-data">
       Upload File: <input type="file" name="file"><br>
       <br>
@@ -68,9 +70,9 @@
 
    
 
-`  {% if user_data  %}
+  {% if user_data  %}
       <div id="results">
-        <img src="{{image_entity['source']['image_uri']}}" width=200 height=200>
+        <h3>Results:</h3>
         Original: {{full_texts[0]['before']}} <br>
         Translated: {{full_texts[0]['after']}} <br>
       </div>
