@@ -1,16 +1,4 @@
-# Copyright 2018 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 from datetime import datetime
 import logging
 import os
@@ -59,7 +47,7 @@ def fetch_times(email, limit):
     return times
 
 
-# [START gae_python37_auth_verify_token]
+
 @app.route('/', methods=['GET', 'POST'])
 def root():
     # Verify Firebase auth.
@@ -84,7 +72,6 @@ def root():
         'index.html',
         user_data=claims, error_message=error_message, image_entity=image,
     full_texts=full_texts)
-# [END gae_python37_auth_verify_token]
 
 
 
@@ -119,21 +106,14 @@ def upload_photo():
     # Create a Cloud Vision client.
     # vision_client = vision.ImageAnnotatorClient()
 
-    # Use the Cloud Vision client to detect a face for our image.
+    # Use the Cloud Vision client
     source_uri = 'gs://{}/{}'.format(CLOUD_STORAGE_BUCKET, blob.name)
     image = vision.types.Image(
         source=vision.types.ImageSource(gcs_image_uri=source_uri))
 
-    # If a face is detected, save to Datastore the likelihood that the face
-    # displays 'joy,' as determined by Google's Machine Learning algorithm.
-        
-        # image = vision.types.Image()
-        # image.source.image_uri = source_uri
-    print("URL +" + str(image.source.image_uri))
     #Text detection
     response = vision_client.text_detection(image=image)
     texts = response.text_annotations
-    print('Texts:')
     full_texts=[]
     for text in texts:
         
@@ -144,8 +124,6 @@ def upload_photo():
         result = translate_client.translate(
             text.description, target_language='ro')
 
-        # print(u'Detected source language: {}'.format(
-            # result['detectedSourceLanguage']))
         full_texts.append({'before':result['input'],'after':result['translatedText']})
 
     if response.error.message:
@@ -160,12 +138,4 @@ def upload_photo():
 
 
 if __name__ == '__main__':
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-
-    # Flask's development server will automatically serve static files in
-    # the "static" directory. See:
-    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
-    # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
