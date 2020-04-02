@@ -1,0 +1,79 @@
+<h1>Google Cloud Platform</h1>
+<br>
+
+<html>
+  <head>
+
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyB9tdQwIPdyKMXMpmhSAK87ScUtXDbBrG8",
+      authDomain: "cloud-lab-272313.firebaseapp.com",
+      databaseURL: "https://cloud-lab-272313.firebaseio.com",
+      projectId: "cloud-lab-272313",
+      storageBucket: "cloud-lab-272313.appspot.com",
+      messagingSenderId: "869865470170",
+      appId: "1:869865470170:web:bfb32943eb0d65b22c0de3",
+      measurementId: "G-926GJZG62H"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <!-- Start login UI -->
+  <script src="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.css" />
+  <!-- End login UI -->
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+
+
+  </head>
+  <body>
+
+  <div id="firebaseui-auth-container"></div>
+    
+  <div id="login-info">
+    <h2>Login info:</h2>
+    {% if user_data %} <dl>
+      <dt>Name: {{ user_data['name'] }}</dt>
+      <br>
+      <dt>Email: {{ user_data['email'] }}</dt>
+      <br>
+    </dl>
+    {% elif error_message %} <p>Error: {{ error_message }}</p>
+    {% endif %}
+  </div>
+
+  <button id="sign-out">Sign Out</button>
+
+
+
+  <div id="upload">
+    <h2>Upload a photo:</h2>
+    <form action="upload_photo" method="POST" enctype="multipart/form-data">
+      Upload File: <input type="file" name="file"><br>
+      <br>
+      <input type="submit" name="submit" value="Submit" id="submit_photo">
+      <br>
+    </form>
+  </div>
+
+   
+
+`  {% if user_data  %}
+      <div id="results">
+        <img src="{{image_entity['source']['image_uri']}}" width=200 height=200>
+        Original: {{full_texts[0]['before']}} <br>
+        Translated: {{full_texts[0]['after']}} <br>
+      </div>
+      {% endif %}
+  </body>
+</html> 
