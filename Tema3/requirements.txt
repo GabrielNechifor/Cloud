@@ -1,0 +1,8 @@
+Flask==1.1.1
+google-cloud-datastore==1.11.0
+google-auth==1.11.2
+requests==2.22.0
+GoogleAppEngineCloudStorageClient==1.9.22.1
+google-cloud-storage==1.26.0
+google-cloud-vision==1.0.0
+google-cloud-translate==2.0.1
