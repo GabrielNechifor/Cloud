@@ -69,22 +69,7 @@
     
           <!-- End sentiment code -->
     
-          <!-- SpellCheck-->
-        <h3>
-          Text to SpellCheck
-        </h3>
-        <form id='spellcheck' action="spellcheck">
-            <label for="spellcheck_language">Type target language for SpellCheck:</label>
-            <input type="text" id="spellcheck_language" name="spellcheck_language"><br><br>
-            <label for="spellcheck_text">Type text for SpellCheck in any language:</label>
-            <input type="text" id="spellcheck_text" name="spellcheck_text"><br><br>
-            <input type="submit" value="Submit">
-            {% if response %}
-            <textarea readonly class="form-control" id="spellcheckarea" rows="5">{{response}}</textarea>
-            {% endif %}
-        </form>
-  
-        <!-- Enf SpellCheck-->
+         
         </form>
       </div>
       <div class="col">
@@ -143,6 +128,22 @@
         </form>
        
         <!-- End Text from image-->
+         <!-- SpellCheck-->
+         <h3>
+          Text to SpellCheck
+        </h3>
+        <form id='spellcheck' action="spellcheck">
+            <label for="spellcheck_language">Type target language for SpellCheck:</label>
+            <input type="text" id="spellcheck_language" name="spellcheck_language"><br><br>
+            <label for="spellcheck_text">Type text for SpellCheck in any language:</label>
+            <input type="text" id="spellcheck_text" name="spellcheck_text"><br><br>
+            <input type="submit" value="Submit">
+            {% if response %}
+            <textarea readonly class="form-control" id="spellcheckarea" rows="5">{{response}}</textarea>
+            {% endif %}
+        </form>
+  
+        <!-- Enf SpellCheck-->
     
       </div>
      </div>
