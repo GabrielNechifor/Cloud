@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required metadata tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Translate and analyze text with Azure Cognitive Services.">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Translate and analyze text with Azure Cognitive Services</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Translate, synthesize, and analyze text with Azure</h1>
+      
+     <!-- HTML provided in the following sections goes here. -->
+     <div class="row">
+      <div class="col">
+        <form>
+          <!-- Enter text to translate. -->
+          <div class="form-group">
+            <label for="text-to-translate"><strong>Enter the text you'd like to translate:</strong></label>
+            <textarea class="form-control" id="text-to-translate" rows="5"></textarea>
+          </div>
+          <!-- Select output language. -->
+          <div class="form-group">
+            <label for="select-language"><strong>Translate to:</strong></label>
+            <select class="form-control" id="select-language">
+              <option value="ar">Arabic</option>
+              <option value="ca">Catalan</option>
+              <option value="zh-Hans">Chinese (Simplified)</option>
+              <option value="zh-Hant">Chinese (Traditional)</option>
+              <option value="hr">Croatian</option>
+              <option value="en">English</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="el">Greek</option>
+              <option value="he">Hebrew</option>
+              <option value="hi">Hindi</option>
+              <option value="it">Italian</option>
+              <option value="ja">Japanese</option>
+              <option value="ko">Korean</option>
+              <option value="pt">Portuguese</option>
+              <option value="ro">Romanian</option>
+              <option value="ru">Russian</option>
+              <option value="es">Spanish</option>
+              <option value="th">Thai</option>
+              <option value="tr">Turkish</option>
+              <option value="vi">Vietnamese</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary mb-2" id="translate">Translate text</button></br>
+          <div id="detected-language" style="display: none">
+            <strong>Detected language:</strong> <span id="detected-language-result"></span><br />
+            <strong>Detection confidence:</strong> <span id="confidence"></span><br /><br />
+          </div>
+    
+          <!-- Start sentiment code-->
+          <button type="submit" class="btn btn-primary mb-2" id="analysis">Run sentiment analysis</button></br>
+          <div id="sentiment" style="display: none">
+            <p>Sentiment scores are provided on a 1 point scale. The closer the sentiment score is to 1, indicates positive sentiment. The closer it is to 0, indicates negative sentiment.</p>
+            <strong>Sentiment for input:</strong> <span id="document-sentiment"></span><br />
+            <strong>Overall Scores:</strong><br />
+            <strong>Positive score - </strong> <span id="posscore"></span><br />
+            <strong>Neutral score - </strong> <span id="neuscore"></span><br />
+            <strong>Negative score - </strong> <span id="negscore"></span><br />
+            <label id="sentences"> </label><br />
+          </div>
+    
+          <!-- End sentiment code -->
+    
+          <!-- SpellCheck-->
+        <h3>
+          Text to SpellCheck
+        </h3>
+        <form id='spellcheck' action="spellcheck">
+            <label for="spellcheck_language">Type target language for SpellCheck:</label>
+            <input type="text" id="spellcheck_language" name="spellcheck_language"><br><br>
+            <label for="spellcheck_text">Type text for SpellCheck in any language:</label>
+            <input type="text" id="spellcheck_text" name="spellcheck_text"><br><br>
+            <input type="submit" value="Submit">
+            {% if response %}
+            <textarea readonly class="form-control" id="spellcheckarea" rows="5">{{response}}</textarea>
+            {% endif %}
+        </form>
+  
+        <!-- Enf SpellCheck-->
+        </form>
+      </div>
+      <div class="col">
+        <!-- Translated text returned by the Translate API is rendered here. -->
+        <form>
+          <div class="form-group" id="translator-text-response">
+            <label for="translation-result"><strong>Translated text:</strong></label>
+            <textarea readonly class="form-control" id="translation-result" rows="5"></textarea>
+          </div>
+    
+          <!-- Start voice font selection code -->
+        
+          <!-- End voice font selection code -->
+    
+        </form>
+    
+        <!-- Add Speech Synthesis button and audio element -->
+        <h3>
+          Text to speech
+        </h3>
+        <form id='set_language_and_text' action="set_language_and_text">
+            <label for="output_language">Type target language for traslation:</label>
+            <input type="text" id="output_language" name="output_language"><br><br>
+            <label for="input_text">Type text for translation in any language:</label>
+            <input type="text" id="input_text" name="input_text"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+  
+  
+  
+        <br><br><br>
+        {% if audio=="true" %}
+        <audio id='audio_element'>
+            <source src="audio.mp3" type="audio/mpeg">
+        </audio>
+        <button id='audio_button' onclick="play_audio()" type="button"><b>Play audio</b></button>
+        {% endif %}
+        <script>
+            var audio_element = document.getElementById('audio_element')
+  
+            function play_audio(){
+                audio_element.play()
+            }
+        </script>
+        <!-- End Speech Synthesis button -->
+        <!-- Text from image-->
+        <h2>Upload a photo:</h2>
+            <form action="upload_photo" method="POST" enctype="multipart/form-data">
+            Upload File: <input type="file" name="file"><br>
+            <br>
+            <input type="submit" name="submit" value="Submit" id="submit_photo">
+            <br>
+            {% if result %}
+            <textarea readonly class="form-control" id="textFromImage" rows="5">{{result}}</textarea>
+            {% endif %}
+        </form>
+       
+        <!-- End Text from image-->
+    
+      </div>
+     </div>
+
+     <!-- End -->
+    </div>
+    <!-- Required Javascript for this tutorial -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type = "text/javascript" src ="static/scripts/main.js"></script>
+  </body>
+</html>
