@@ -1,0 +1,56 @@
+Tehnologiile utilizate:
+
+1. Firebase Authentication de la Google Cloud:
+    *Prezentare generală
+        Firebase Authentication este o tehonologie multiplatformă ce oferă servicii de backend, 
+        SDK-uri ușor de utilizat și biblioteci UI gata făcute pentru a autentifica utilizatorii 
+        în aplicație, acceptă autentificarea folosind parole, numere de telefon, conturi de la
+        Google, Facebook, Twitter și multe alte medii de socializare.
+    *Motivul utilizării
+        Avem nevoie sa ne putem autentifica in aplicație cu ajutorul conturilor de la Google, Facebook
+        si altele, iar Firebase Authentication ne oferă această posibilitate. Și în plus, se bazează 
+        pe standardele industriei precum OAuth 2.0 și OpenID Connect, astfel încât poate fi integrat 
+        ușor cu backend-ul personalizat.
+        
+2. Cloud SQL Database de la Google Cloud:
+    *Prezentare generală
+        Cloud SQL este un serviciu de baze de date complet gestionat, care facilitează configurarea 
+        și administrarea bazelor de date relaționale PostgreSQL, MySQL și SQL Server din cloud.
+    *Motivul utilizării
+        Oferă un nivel de securitate ridicat și este ușor de integrat cu aplicațiile existente
+        și cu alte servicii Google Cloud.
+        
+3. Cloud Storage de la Google Cloud:
+    *Prezentare generală
+        Cloud Storage este un serviciu ce oferă o stocare de obiecte de înaltă durabilitate 
+        la nivel mondial, care se extinde la exabytes de date.
+    *Motivul utilizării
+        Datele se pot accesa instantaneu de la orice clasă de stocare și se integrează în aplicații 
+        cu un singur API unificat.
+
+4. Google Cloud Text-to-Speech:
+    *Prezentare generală
+        Google Cloud Text-to-Speech este un API ce transformă textul în vorbire asemănătoare omului 
+        în mai mult de 180 de voci în peste 30 de limbi și variante. Acesta aplică cercetări de ultimă 
+        generație în sinteza vorbirii (WaveNet) și în rețelele neuronale puternice ale Google pentru a 
+        furniza audio de înaltă fidelitate.
+    *Motivul utilizării
+        Ne oferă funcționalitatea de care avem nevoie, adică transformă un text dat în echivalentul său
+        audio, și este ușor de integrat cu celelalte servicii folosite.
+        
+5. Google Cloud Speech-to-Text:
+    *Prezentare generală
+        Google Speech-to-Text este un API ce permite dezvoltatorilor să convertească audio în text, 
+        aplicând modele puternice de rețea neuronală, recunoscând mai mult de 120 de limbi și variante.
+    *Motivul utilizat
+        Este un API ușor de utilizat și de integrat cu celelalte servicii folosite. Deasemenea servește
+        scopului unei specificații a aplicației, și anume a recunoașterii vorbirii unui utilizator și
+        transformarea acesteia în text.
+        
+6. Google Cloud Vision AI
+    *Prezentare generală
+        Google Cloud Vision AI este un serviciu ce obține informații din imagini cu AutoML Vision,
+        detectează emoția, înțelege textul din imagine utilizând modele pre-instruite Vision API etc.
+    *Motivul utilizării
+        Are mai multe funcționalitati care se pot aplica unei imagini, ceea ce poate mări complexitatea
+        aplicației și este ușor de integrat cu celelalte servicii folosite.
