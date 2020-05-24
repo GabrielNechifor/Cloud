@@ -32,5 +32,5 @@
     ],
     "appService.defaultWebAppToDeploy": "/subscriptions/74ea97fe-2dd0-46bb-95cb-48b493fa57b5/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/CognitiveServicesTest34",
     "appService.deploySubpath": "",
-    "python.pythonPath": "C:\\Users\\sanio\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe"
+    "python.pythonPath": "C:\\Program Files\\Python38\\python.exe"
 }

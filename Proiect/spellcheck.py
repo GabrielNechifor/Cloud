@@ -3,6 +3,43 @@ import urllib.parse as parse
 import json
 import requests
 
+language_dict={
+    'ar' : 'ar-EG',
+    'bg' : 'bg-BG',
+    'ca' : 'ca-ES',
+    'cs' : 'cs-CZ',
+    'da' : 'da-DK',
+    'de' : 'de-DE',
+    'el' : 'el-GR',
+    'en' : 'en-US',
+    'es' : 'es-ES',
+    'fi' : 'fi-FI',
+    'fr' : 'fr-FR',
+    'he' : 'he-IL',
+    'hi' : 'hi-IN',
+    'hr' : 'hr-HR',
+    'hu' : 'hu-HU',
+    'id' : 'id-ID',
+    'it' : 'it-IT',
+    'ja' : 'ja-JP',
+    'ko' : 'ko-KR',
+    'ms' : 'ms-MY',
+    'nb' : 'nb-NO',
+    'nl' : 'nl-NL',
+    'pl' : 'pl-PL',
+    'pt' : 'pt-PT',
+    'ro' : 'ro-RO',
+    'ru' : 'ru-RU',
+    'sk' : 'sk-SK',
+    'sl' : 'sl-SI',
+    'sv' : 'sv-SE',
+    'ta' : 'ta-IN',
+    'te' : 'te-IN',
+    'th' : 'th-TH',
+    'tr' : 'tr-TR',
+    'vi' : 'vi-VN',
+    'zh-Hans' : 'zh-CN'  
+}
 
 def spellcheck_text(text, language):
     api_key = "8262500a607e4a74a59ddb8ca0fb1cac"
@@ -45,4 +82,4 @@ def spellcheck_text(text, language):
     return text
 
 
-#print(spellcheck_text("Salu, ce ma gaci?", "ro-RO")) #fii atent la formatul limbii !
+#print(spellcheck_text("Salu, ce ma gaci?", "ro-RO")) #fii atent la formatul limbii!

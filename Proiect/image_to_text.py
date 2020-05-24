@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request
+import json
 import azure.cognitiveservices.speech as speechsdk
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 import os, requests, uuid, json
 import io
 
-def text_from_image(image_data):
+def get_text(image_data):
     subscription_key = "c92ca35ff7354fa985474ed1630e52a8"
     endpoint = 'https://textfromimageproject.cognitiveservices.azure.com/'
 	
@@ -27,8 +28,8 @@ def text_from_image(image_data):
 
 
 '''
-with io.open("D:\Facultate\CC\Teme\Cloud\Tema3\Image\Kamina quote.jpg", "rb") as f:
+with io.open("D:\Facultate\CC\Cloud\Tema3\Image\Kamina quote.jpg", "rb") as f:
         content = f.read()
 
-print(text_from_image(content))
+print(get_text(content))
 '''

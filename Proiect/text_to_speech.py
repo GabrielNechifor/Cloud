@@ -38,7 +38,7 @@ language_dict={
     'zh-Hans' : 'zh-CN'  
 }
 
-def get_voice(text, language):
+def translate(text, language):
     # Creates an instance of a speech config with specified subscription key and service region.
     # Replace with your own subscription key and service region (e.g., "westus").
     speech_key, service_region = "51efd601e17f47d9bd3bf67bf81d0755", "westeurope"
@@ -68,4 +68,4 @@ def get_voice(text, language):
     return result
 
 
-#print(get_voice("Hello world!", 'en'))
+#print(translate("Hello world!", 'en'))
