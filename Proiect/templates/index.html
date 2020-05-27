@@ -1,1 +1,708 @@
-Hello world
+<!doctype html>
+<html>
+
+<head>
+  <title>Datastore and Firebase Auth Example</title>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDwsyXZyYMRlpykzhhviAH3UD7YrB0AHZY",
+    authDomain: "ia1-xmekho.firebaseapp.com",
+    databaseURL: "https://ia1-xmekho.firebaseio.com",
+    projectId: "ia1-xmekho",
+    storageBucket: "ia1-xmekho.appspot.com",
+    messagingSenderId: "707584052516",
+    appId: "1:707584052516:web:1bd0c27d3ef8b3966477b1"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
+
+  <script>
+    if (typeof firebase === 'undefined') {
+      const msg = "Please paste the Firebase initialization snippet into index.html. See https://console.firebase.google.com > Overview > Add Firebase to your web app.";
+      console.log(msg);
+      alert(msg);
+    }
+  </script>
+  <!-- Start login UI -->
+  <script src="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.0/firebase-ui-auth.css" />
+  <!-- End login UI -->
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+    <div id="firebaseui-auth-container"></div>
+
+
+  <div id="FULL-UI" style="display: none;">
+    <nav class="navbar navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">TextRender</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="saved_resources_page">Saved Resources</a>
+            <a class="nav-item nav-link" id="sign-out">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container" style="padding-top: 12px;">
+
+    <div class="row">
+
+        <!--FROM-->
+        <div class="col-lg-5">
+
+            <div class="row form-group">
+                <!--TEXT-->
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="from(this)">
+                        Text
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 16" width="18" height="16">
+                            <path fill-rule="evenodd"
+                                d="M13.62 9.08L12.1 3.66h-.06l-1.5 5.42h3.08zM5.7 10.13S4.68 6.52 4.53 6.02h-.08l-1.13 4.11H5.7zM17.31 14h-2.25l-.95-3.25h-4.07L9.09 14H6.84l-.69-2.33H2.87L2.17 14H0l3.3-9.59h2.5l2.17 6.34L10.86 2h2.52l3.94 12h-.01z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <!--IMAGE-->
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="from(this)">
+                        Image
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 16" width="12" height="16">
+                            <path fill-rule="evenodd"
+                                d="M6 5h2v2H6V5zm6-.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v11l3-5 2 4 2-2 3 3V5z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <!--AUDIO-->
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="from(this)">
+                        Audio
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path fill-rule="evenodd"
+                                d="M10 1c-.17 0-.36.05-.52.14C8.04 2.02 4.5 4.58 3 5c-1.38 0-3 .67-3 2.5S1.63 10 3 10c.3.08.64.23 1 .41V15h2v-3.45c1.34.86 2.69 1.83 3.48 2.31.16.09.34.14.52.14.52 0 1-.42 1-1V2c0-.58-.48-1-1-1zm0 12c-.38-.23-.89-.58-1.5-1-.16-.11-.33-.22-.5-.34V3.31c.16-.11.31-.2.47-.31.61-.41 1.16-.77 1.53-1v11zm2-6h4v1h-4V7zm0 2l4 2v1l-4-2V9zm4-6v1l-4 2V5l4-2z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--SWITCH icon-->
+        <div class="col-lg-2 my-auto text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 16" width="40" height="32"><path d="M0 8l6-5v3h8V3l6 5-6 5v-3H6v3L0 8z"></path></svg>
+        </div>
+
+
+        <!--TO (Right side)-->
+        <div class="col-lg-5">
+
+            <div class="row form-group">
+                <!--TEXT-->
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="to(this)">
+                        Text
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 16" width="18" height="16">
+                            <path fill-rule="evenodd"
+                                d="M13.62 9.08L12.1 3.66h-.06l-1.5 5.42h3.08zM5.7 10.13S4.68 6.52 4.53 6.02h-.08l-1.13 4.11H5.7zM17.31 14h-2.25l-.95-3.25h-4.07L9.09 14H6.84l-.69-2.33H2.87L2.17 14H0l3.3-9.59h2.5l2.17 6.34L10.86 2h2.52l3.94 12h-.01z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- <div class="row form-group">
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block">
+                        Image
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 16" width="12" height="16">
+                            <path fill-rule="evenodd"
+                                d="M6 5h2v2H6V5zm6-.5V14c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V2c0-.55.45-1 1-1h7.5L12 4.5zM11 5L8 2H1v11l3-5 2 4 2-2 3 3V5z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div> -->
+
+            <div class="row form-group">
+                <!--AUDIO-->
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="to(this)">
+                        Audio
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+                            <path fill-rule="evenodd"
+                                d="M10 1c-.17 0-.36.05-.52.14C8.04 2.02 4.5 4.58 3 5c-1.38 0-3 .67-3 2.5S1.63 10 3 10c.3.08.64.23 1 .41V15h2v-3.45c1.34.86 2.69 1.83 3.48 2.31.16.09.34.14.52.14.52 0 1-.42 1-1V2c0-.58-.48-1-1-1zm0 12c-.38-.23-.89-.58-1.5-1-.16-.11-.33-.22-.5-.34V3.31c.16-.11.31-.2.47-.31.61-.41 1.16-.77 1.53-1v11zm2-6h4v1h-4V7zm0 2l4 2v1l-4-2V9zm4-6v1l-4 2V5l4-2z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!--close to-->
+        </div>
+
+    <!-- row -->
+    </div>
+
+    <!-- move list of languages to JS -->
+    <div class="row form-group">
+        <div class="col-3">
+
+            <label for="fromLanguage">From</label>
+            <select class="form-control" id="fromLanguage">
+                <option value="ar">Arabic</option>
+                <option value="bg">Bulgarian</option>
+                <option value="ca">Catalan</option>
+                <option value="cz">Czech </option>
+                <option value="da">Danish</option>
+                <option value="de">German</option>
+                <option value="el">Greek</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fi">Finish</option>
+                <option value="fr">French</option>
+                <option value="he">Hebrew</option>
+                <option value="hi">Hindi</option>
+                <option value="hr">Croatian</option>
+                <option value="hu">Hungarian</option>
+                <option value="id">Indonesian</option>
+                <option value="it">Italian</option>
+                <option value="ja">Japanesse</option>
+                <option value="ko">Korean</option>
+                <option value="ms">Malay</option>
+                <option value="nb">Norwegian</option>
+                <option value="nl">Dutch</option>
+                <option value="pl">Polish</option>
+                <option value="pt">Portuguese</option>
+                <option value="ro">Romanian</option>
+                <option value="ru">Russian</option>
+                <option value="sk">Slovak</option>
+                <option value="sk">Slovenian</option>
+                <option value="sv">Swedish</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="th">Thai</option>
+                <option value="tr">Turkish</option>
+                <option value="vi">Vietnamese</option>
+                <option value="zh">Chinese</option>
+              </select>
+
+            <label for="toLanguage" >To</label>
+              <select class="form-control" id="toLanguage">
+                <option value="ar">Arabic</option>
+                <option value="bg">Bulgarian</option>
+                <option value="ca">Catalan</option>
+                <option value="cz">Czech </option>
+                <option value="da">Danish</option>
+                <option value="de">German</option>
+                <option value="el">Greek</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fi">Finish</option>
+                <option value="fr">French</option>
+                <option value="he">Hebrew</option>
+                <option value="hi">Hindi</option>
+                <option value="hr">Croatian</option>
+                <option value="hu">Hungarian</option>
+                <option value="id">Indonesian</option>
+                <option value="it">Italian</option>
+                <option value="ja">Japanesse</option>
+                <option value="ko">Korean</option>
+                <option value="ms">Malay</option>
+                <option value="nb">Norwegian</option>
+                <option value="nl">Dutch</option>
+                <option value="pl">Polish</option>
+                <option value="pt">Portuguese</option>
+                <option value="ro">Romanian</option>
+                <option value="ru">Russian</option>
+                <option value="sk">Slovak</option>
+                <option value="sk">Slovenian</option>
+                <option value="sv">Swedish</option>
+                <option value="ta">Tamil</option>
+                <option value="te">Telugu</option>
+                <option value="th">Thai</option>
+                <option value="tr">Turkish</option>
+                <option value="vi">Vietnamese</option>
+                <option value="zh">Chinese</option>
+              </select>
+
+        </div>
+    </div>
+
+    <!--input method -->
+    <div class="row form-group">
+        <div class="col-lg-8" id="input-method">
+            <textarea class="form-control" rows="3">
+
+            </textarea>
+        </div>
+
+        <div class="col-lg-3">
+            <button type="button" class="btn btn-primary" onclick="translateInput(this)">Translate</button>
+        </div>
+    </div>
+
+    <!-- result -->
+    <div class="row form-group" id="result-row">
+
+        <div class="col-lg-8" id="result">
+            <!-- either textarea or audio file -->
+            <!-- <textarea class="form-control" rows="3">
+
+            </textarea> -->
+
+        </div>
+
+        <!-- <div class="col-lg-3" id="save">
+            <input type="text" class="form-control" id="translation-name" placeholder="Name for Translation">
+            <button type="button" class="btn btn-primary">Save</button>
+        </div> -->
+
+    </div>
+
+    <!-- container -->
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+  <div class="modal-body">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div> Processing translation. Please wait.
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loadingModal" style="display: none;" onclick="showModal()" id="btnShowModal" >
+Launch demo modal
+</button>
+
+<input type="button" onclick="play_audio()" value="Play audio" style="visibility: hidden;">
+<audio id='audio_element'>
+<source src="" type="audio/mp3" id="audio_source">
+</audio>
+
+<!--   ---------------------------------------------HERE STARTS JAVASCRIPT STUFF   ----------------------------------->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--    <script src="javascript.js"></script>-->
+<script>
+
+var FROM="Text"; // Text Image Audio
+var TO="Text"; // text audio
+var translationStringIsSet = false;
+
+function from(val)
+{
+FROM = val.innerText;
+FROM = FROM.replace(' ','');
+console.log(typeof(FROM));
+console.log(FROM);
+
+//remove current method
+input = document.getElementById('input-method');
+input.textContent="";
+
+if(FROM==="Text")
+{
+    console.log('text');
+    textInputString = `
+    <textarea class="form-control" rows="3"></textarea>`
+    input.innerHTML=textInputString;
+}
+else if(FROM=="Image")
+{
+    console.log("Image");
+    imageInputString = `
+    <input type="file" class="form-control-file" id="from-image">`
+    input.innerHTML = imageInputString;
+
+}
+else if(FROM=="Audio")
+{
+    audioInputString = `
+    <input type="file" class="form-control-file" id="from-image">
+    `
+    input.innerHTML=audioInputString;
+}
+}
+
+function to(val)
+{
+
+TO = val.innerText;
+TO = TO.replace(' ','');
+console.log(TO);
+
+}
+
+
+function showResult(translatedText)
+{
+result = document.getElementById('result');
+resultRow = document.getElementById('result-row');
+result.textContent = '';
+
+saveTranslationString=`
+<div class="col-lg-3" id="save">
+    <input type="text" class="form-control" id="translation-name" placeholder="Name for Translation">
+    <input type="text" class="form-control" id="translation-description" placeholder="Description">
+    <button type="button" class="btn btn-primary" onclick='saveTranslation()'>Save</button>
+</div>`
+if(TO=='Text')
+{
+    console.log('TO TEXT');
+
+    resultString = ' <textarea class="form-control" rows="3" id="translation-result">' + translatedText + '</textarea>'
+    result.innerHTML=resultString;
+
+}
+else if(TO=="Audio")
+{
+    resultString = `
+    <button id="speech-result" type="button" class="btn btn-primary">Download Audio File</button>
+    `
+    audio_element = document.getElementById('audio_source');
+    audio_element.src = translatedText;
+
+    result.innerHTML=resultString;
+
+}
+if(!translationStringIsSet)
+{
+    resultRow.innerHTML+=saveTranslationString;
+    translationStringIsSet=true;
+}
+}
+
+async function saveTranslation()
+{
+
+var name = document.getElementById('translation-name').value;
+var description = document.getElementById('translation-description').value;
+
+var from = document.getElementById('fromLanguage');
+var fromLanguage = from.options[from.selectedIndex].value;
+
+var to = document.getElementById('toLanguage');
+var toLanguage = to.options[to.selectedIndex].value;
+
+var input='';
+if(FROM=="Text")
+    input= document.getElementById('input-method').firstElementChild.value;
+else
+    input = document.getElementById('from-image').files[0];
+var output='';
+if(TO=="Text")
+    output = document.getElementById('translation-result').value;
+else
+    output = document.getElementById('audio_element').src;
+
+var formData = new FormData();
+formData.set('name',name);
+formData.set('description',description);
+
+formData.set('input_type',FROM.toLowerCase());
+formData.set('output_type',TO.toLowerCase());
+
+formData.set('input_language',fromLanguage);
+formData.set('output_language',toLanguage);
+
+formData.set('input_resource',input);
+formData.set('output_resource',output);
+
+for (var pair of formData.entries())
+    console.log(pair[0]+ ', ' + pair[1]);
+
+var URL = 'https://cloud-test-shell.wl.r.appspot.com/save_resource';
+var result='';
+
+    await axios.post(URL,formData,{headers: {'content-type': 'multipart/form-data'}})
+    .then(function (response){
+        console.log(response);
+        result = response.data;
+        document.getElementById('save').style.visibility = "hidden";
+        alert("Resource saved");
+    }).catch(function (response){
+        console.log(response);
+        result = response.data;
+    });
+return result;
+}
+
+
+async function translateInput(val)
+{
+showModal();
+if(FROM=="Text" && TO=="Text" )
+{
+    result = await text_to_text();
+    showResult(result);
+}
+if(FROM=="Image" && TO=="Text")
+{
+    result = await image_to_text();
+    showResult(result);
+}
+if(FROM=="Audio" && TO=="Text")
+{
+    result = await audio_to_text();
+    showResult(result);
+}
+if(FROM=="Text" && TO=="Audio")
+{
+    result = await text_to_audio();
+    showResult(result);
+}
+if(FROM=="Image" && TO=="Audio")
+{
+    result = await image_to_audio();
+}
+if(FROM=="Audio" && TO=="Audio")
+{
+    result = await audio_to_audio();
+    console.log(result);
+
+}
+
+document.getElementById('loadingModal').click(); // just to make the modal disapperar
+}
+
+/*
+to_audio functions only get the string from the server.
+*/
+function play_audio(){
+console.log('playing audio');
+
+var audio_element = document.getElementById('audio_element');
+    audio_element.play()
+}
+
+async function audio_to_audio()
+{
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+
+var from = document.getElementById('fromLanguage');
+var fromStr = from.options[from.selectedIndex].value;
+
+var blobAudio = document.getElementById('from-image').files[0];
+
+URL='https://cloud-test-shell.wl.r.appspot.com/speech_to_speech';
+
+var formData = new FormData();
+formData.set('speech_data',blobAudio);
+formData.set('from',fromStr);
+formData.set('to',toStr);
+
+await axios.post(URL,formData,{headers: {'content-type': 'multipart/form-data'}})
+    .then(function (response){
+        console.log(response);
+
+        result = response.data;
+    }).catch(function (response){
+        console.log(response);
+        result = response.data;
+
+    });
+
+return result;
+}
+
+
+async function image_to_audio()
+{
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+var blobImage = document.getElementById('from-image').files[0];
+
+URL='https://cloud-test-shell.wl.r.appspot.com/image_to_speech';
+
+var formData = new FormData();
+formData.set('image_data',blobImage);
+formData.set('to',toStr);
+
+
+await axios.post(URL,formData,{headers: {'content-type': 'multipart/form-data'}})
+    .then(function (response){
+        console.log(response);
+        result = response.data;
+    }).catch(function (response){
+        console.log(response);
+        result = response.data;
+
+    });
+
+return result;
+}
+
+
+async function text_to_audio()
+{
+var input_text= document.getElementById('input-method').firstElementChild.value;
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+
+console.log(input_text);
+
+URL = `https://cloud-test-shell.wl.r.appspot.com/text_to_speech?input_text=${input_text}&to=${toStr}`;
+
+console.log(URL);
+
+var result;
+await axios({
+    method: 'get',
+    url: URL,
+    })
+    .then(function (response) {
+        console.log(response);
+        result =  response.data;
+    })
+    .catch(function (response) {
+        console.log("ERROR");
+        result =  'Something went wrong!'
+    });
+return result;
+}
+
+
+async function audio_to_text()
+{
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+
+var from = document.getElementById('fromLanguage');
+var fromStr = from.options[from.selectedIndex].value;
+
+var blobAudio = document.getElementById('from-image').files[0];
+
+URL='https://cloud-test-shell.wl.r.appspot.com/speech_to_text';
+
+var formData = new FormData();
+formData.set('speech_data',blobAudio);
+formData.set('from',fromStr);
+formData.set('to',toStr);
+
+await axios.post(URL,formData,{headers: {'content-type': 'multipart/form-data'}})
+    .then(function (response){
+        console.log(response);
+        console.log('SUCCESS MTHAFUCKA');
+
+        result = response.data;
+    }).catch(function (response){
+        console.log(response);
+        result = response.data;
+
+    });
+return result;
+}
+
+
+async function image_to_text()
+{
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+var blobImage = document.getElementById('from-image').files[0];
+
+URL='https://cloud-test-shell.wl.r.appspot.com/image_to_text';
+
+var formData = new FormData();
+formData.set('image_data',blobImage);
+formData.set('to',toStr);
+
+
+await axios.post(URL,formData,{headers: {'content-type': 'multipart/form-data'}})
+    .then(function (response){
+        console.log(response);
+        result = response.data;
+    }).catch(function (response){
+        console.log(response);
+        result = response.data;
+
+    });
+
+return result;
+}
+
+async function text_to_text()
+{
+var input_text= document.getElementById('input-method').firstElementChild.value;
+var to = document.getElementById('toLanguage');
+var toStr = to.options[to.selectedIndex].value;
+URL = `https://cloud-test-shell.wl.r.appspot.com/text_to_text?input_text=${input_text}&to=${toStr}`;
+
+var result;
+await axios({
+    method: 'get',
+    url: URL,
+    })
+    .then(function (response) {
+        console.log("SUCCES from axios" + response.data);
+        result =  response.data;
+    })
+    .catch(function (response) {
+        console.log("ERROR");
+        result =  'Something went wrong!'
+    });
+return result;
+}
+
+
+function showModal()
+{
+//button is hidden
+btn = document.getElementById('btnShowModal');
+btn.click();
+}
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+</div>
+
+</body>
+
+</html>

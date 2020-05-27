@@ -37,7 +37,7 @@ language_dict={
     'th' : 'th-TH',
     'tr' : 'tr-TR',
     'vi' : 'vi-VN',
-    'zh-Hans' : 'zh-CN'  
+    'zh' : 'zh-CN'  
 }
 
 

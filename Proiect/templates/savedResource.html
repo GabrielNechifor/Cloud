@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    
+    <title>TextRender</title>
+</head>
+
+<body onload="renderResource()">
+    <div style="display:none;">
+    <h3 id="resource_name">{{resource_name}}</h3>
+    <h3 id="input_type">{{input_type}}</h3>
+    <h3 id="output_type">{{output_type}}</h3>
+    <h3 id="input_language">{{input_language}}</h3>
+    <h3 id="output_language">{{output_language}}</h3>
+    <h3 id="input_resource">{{input_resource}}</h3>
+    <h3 id="output_resource">{{output_resource}}</h3>
+    </div>
+
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">TextRender</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="#">Saved Resources</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>{{resource_name}}</h3>
+            </div>
+        </div>
+
+        <div class="row" id="content-row">
+            <div class="col-6" id="content-col-FROM">
+
+            </div>
+            
+            <div class="col-6" id="content-col-TO">
+
+            </div>
+        </div>
+    
+        <!-- container -->
+    </div>
+
+
+    <script>
+        function renderResource()
+{
+    resourceTypeFROM= document.getElementById("input_type").textContent
+    resourceTypeTO = document.getElementById("output_type").textContent
+    input_resource = document.getElementById("input_resource").textContent
+    output_resource = document.getElementById("output_resource").textContent
+    console.log(resourceTypeFROM + " " + resourceTypeTO + " " + input_resource + " " + output_resource);
+    
+
+    contentCol = document.getElementById('content-col-FROM');
+    contentCol.innerHTML=`<h3>Initial</h3> <br>`
+
+    resourceText = "test text";
+    resourceImageURL = 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg';
+
+    if(resourceTypeFROM=="text")
+    {
+        translationString='<textarea class="form-control" rows="3">' + input_resource.substring(2,input_resource.length-1)  +'</textarea>'
+        contentCol.innerHTML += translationString;
+    }
+    else if(resourceTypeFROM=="audio")
+    {
+        audioString =`<button type="button" class="btn btn-primary btn-lg btn-block" >Play</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" >Download File</button>`
+        contentCol.innerHTML += audioString;
+    }
+    else if(resourceTypeFROM=="image")
+    {
+        imageString = '<img src="' + resourceImageURL +'" class="img-fluid" alt="Responsive image">'
+        contentCol.innerHTML+=input_resource;
+    }
+
+    contentColTO = document.getElementById('content-col-TO');
+    contentColTO.innerHTML = `<h3>Translated</h3> <br>`
+
+    if(resourceTypeTO=="text")
+    {
+        translationString='<textarea class="form-control" rows="3">' + decode_utf8(output_resource.substring(2,output_resource.length-1))   +'</textarea>'
+        contentColTO.innerHTML += translationString;
+    }
+    else if(resourceTypeTO=="audio")
+    {
+        audioString =`<button type="button" class="btn btn-primary btn-lg btn-block" >Play</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block" >Download File</button>`
+        contentColTO.innerHTML += audioString;
+    }
+
+}
+
+function encode_utf8(s) {
+  return unescape(encodeURIComponent(s));
+}
+
+function decode_utf8(s) {
+  return decodeURIComponent(escape(s));
+}
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
