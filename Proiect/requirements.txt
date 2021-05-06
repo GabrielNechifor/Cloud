@@ -1,5 +1,5 @@
 Flask==1.1.1
-flask-cors==3.0.8
+flask-cors==3.0.9
 requests==2.23.0
 azure-ai-textanalytics==1.0.0b4
 azure-cognitiveservices-speech==1.11.0
